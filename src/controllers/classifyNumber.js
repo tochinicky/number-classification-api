@@ -10,27 +10,24 @@ const classifyNumber = async (req, res) => {
   try {
     const { number } = req.query;
 
-    // Enhanced validation: Allow integers in any format (including negatives and decimals)
-    const parsed = parseFloat(number);
+    // Validate input (accepts integers in any format)
+    const parsed = Number(number);
     if (isNaN(parsed) || !Number.isInteger(parsed)) {
-      return res.status(400).json({
-        number: number,
-        error: true,
-      });
+      return res.status(400).json({ number, error: true });
     }
 
-    const num = parseInt(number);
+    const num = parsed;
 
     // Calculate properties
     const properties = [];
     if (isArmstrong(num)) properties.push("armstrong");
-    properties.push(num % 2 === 0 ? "even" : "odd");
+    properties.push(Math.abs(num) % 2 === 0 ? "even" : "odd");
 
-    // Create response
+    // Build response
     const response = {
       number: num,
-      is_prime: isPrime(num),
-      is_perfect: isPerfect(num),
+      is_prime: isPrime(Math.abs(num)), // Primes are absolute
+      is_perfect: isPerfect(Math.abs(num)), // Perfect numbers are positive
       properties,
       digit_sum: digitSum(num),
       fun_fact: await getFunFact(num),
@@ -38,7 +35,6 @@ const classifyNumber = async (req, res) => {
 
     res.status(200).json(response);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

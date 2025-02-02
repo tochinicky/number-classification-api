@@ -23,8 +23,8 @@ const isPerfect = (num) => {
 };
 
 const isArmstrong = (num) => {
-  const str = num.toString();
-  const power = num.length;
+  const str = Math.abs(num).toString();
+  const power = str.length;
   return (
     num ===
     str
