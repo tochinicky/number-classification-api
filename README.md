@@ -10,6 +10,9 @@ A simple API that classifies a number based on its mathematical properties and p
 - Checks if a number is Armstrong.
 - Returns sum of digits.
 - Fetches a fun fact using Numbers API.
+- Automated Azure deployment via GitHub Actions
+- CORS support
+- JSON responses
 
 ## API Endpoint
 
