@@ -1,0 +1,34 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to ACR
+        run: az acr login --name hngregistry
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t hngregistry.azurecr.io/number-classification-api:${{ github.sha }} .
+          docker push hngregistry.azurecr.io/number-classification-api:${{ github.sha }}
+
+      - name: Deploy to Azure Web App
+        run: |
+          az webapp config container set --name hngWebApp --resource-group az-StorageRg --docker-custom-image-name hngregistry.azurecr.io/number-classification-api:${{ github.sha }}
+
+      - name: Restart App Service
+        run: az webapp restart --resource-group az-StorageRg --name hngWebApp
