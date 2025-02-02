@@ -1,42 +1,48 @@
-// Function to check if a number is Armstrong
-function isArmstrong(num) {
-  const digits = num.toString().split("");
-  const sum = digits.reduce(
-    (acc, digit) => acc + Math.pow(Number(digit), digits.length),
-    0
-  );
-  return sum === num;
-}
-
-// Function to check if a number is prime
-function isPrime(num) {
+const isPrime = (num) => {
   if (num <= 1) return false;
-  for (let i = 2; i <= Math.sqrt(num); i++) {
+  if (num === 2) return true;
+  if (num % 2 === 0) return false;
+
+  for (let i = 3; i <= Math.sqrt(num); i += 2) {
     if (num % i === 0) return false;
   }
   return true;
-}
+};
 
-// Function to check if a number is perfect
-function isPerfect(num) {
-  let sum = 0;
-  for (let i = 1; i <= num / 2; i++) {
-    if (num % i === 0) sum += i;
+const isPerfect = (num) => {
+  if (num <= 1) return false;
+  let sum = 1;
+
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+    if (num % i === 0) {
+      sum += i;
+      if (i !== num / i) sum += num / i;
+    }
   }
   return sum === num;
-}
+};
 
-// Function to calculate sum of digits
-function digitSum(num) {
-  return num
+const isArmstrong = (num) => {
+  if (num < 0) return false; // Handle negative numbers
+  const str = num.toString();
+  const power = str.length;
+
+  // Special case: single-digit numbers
+  if (power === 1) return false; // Exclude single-digit Armstrong numbers
+
+  return (
+    num ===
+    str
+      .split("")
+      .reduce((sum, digit) => sum + Math.pow(parseInt(digit), power), 0)
+  );
+};
+
+const digitSum = (num) => {
+  return Math.abs(num)
     .toString()
     .split("")
     .reduce((sum, digit) => sum + parseInt(digit), 0);
-}
-
-module.exports = {
-  isArmstrong,
-  isPrime,
-  isPerfect,
-  digitSum,
 };
+
+module.exports = { isPrime, isPerfect, isArmstrong, digitSum };

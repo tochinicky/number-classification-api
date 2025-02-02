@@ -1,12 +1,15 @@
 const axios = require("axios");
 
-exports.getFunFact = async (num) => {
+const getFunFact = async (num) => {
   try {
     const response = await axios.get(
-      `http://numbersapi.com/${Math.abs(num)}/math`
+      `http://numbersapi.com/${Math.abs(num)}/math?json`
     );
-    return response.data;
+    return response.data.text || "No fun fact available";
   } catch (error) {
-    return "Fun fact not available";
+    console.error("Error fetching fun fact:", error);
+    return "No fun fact available";
   }
 };
+
+module.exports = { getFunFact };

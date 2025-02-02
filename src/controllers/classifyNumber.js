@@ -1,45 +1,45 @@
 const {
-  isArmstrong,
   isPrime,
   isPerfect,
+  isArmstrong,
   digitSum,
 } = require("../services/numberUtils");
+const { getFunFact } = require("../services/funFactService");
 
-const classifyNumber = (req, res) => {
-  const { number } = req.query;
+const classifyNumber = async (req, res) => {
+  try {
+    const { number } = req.query;
 
-  // Check for valid number input
-  const num = parseInt(number, 10);
-  if (isNaN(num)) {
-    return res.status(400).json({
-      number: number,
-      error: true,
-      message: "Invalid input. Please provide a valid number.",
-    });
+    // Strict integer validation
+    if (!/^-?\d+$/.test(number)) {
+      return res.status(400).json({
+        number: number,
+        error: true,
+      });
+    }
+
+    const num = parseInt(number);
+
+    // Calculate properties
+    const properties = [];
+    if (isArmstrong(num)) properties.push("armstrong");
+    properties.push(num % 2 === 0 ? "even" : "odd");
+
+    // Create response
+    const response = {
+      number: num,
+      is_prime: isPrime(num),
+      is_perfect: isPerfect(num),
+      properties,
+      digit_sum: digitSum(num),
+      fun_fact: await getFunFact(num),
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
-
-  const properties = [];
-
-  // Check classifications
-  if (isArmstrong(num)) properties.push("armstrong");
-  if (isPrime(num)) properties.push("prime");
-  if (isPerfect(num)) properties.push("perfect");
-  if (num % 2 === 0) properties.push("even");
-  else properties.push("odd");
-
-  // Prepare fun fact
-  const funFact = `The number ${num} is classified as ${properties.join(
-    ", "
-  )}.`;
-
-  return res.status(200).json({
-    number: num,
-    is_prime: isPrime(num),
-    is_perfect: isPerfect(num),
-    properties: properties,
-    digit_sum: digitSum(num),
-    fun_fact: funFact,
-  });
 };
 
 module.exports = { classifyNumber };
