@@ -47,6 +47,7 @@
 // module.exports = { isPrime, isPerfect, isArmstrong, digitSum };
 
 // Helper functions
+// Helper functions
 const isPrime = (num) => {
   if (num <= 1) return false;
   for (let i = 2; i < num; i++) {
