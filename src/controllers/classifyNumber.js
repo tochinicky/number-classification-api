@@ -19,9 +19,14 @@ const classifyNumber = async (req, res) => {
     const num = parsed;
 
     // Calculate properties
+    // Ensure properties array matches the required combinations
     const properties = [];
-    if (isArmstrong(num)) properties.push("armstrong");
-    properties.push(num % 2 === 0 ? "even" : "odd");
+    if (isArmstrong(num)) {
+      properties.push("armstrong");
+      properties.push(num % 2 === 0 ? "even" : "odd");
+    } else {
+      properties.push(num % 2 === 0 ? "even" : "odd");
+    }
 
     // Build response
     const response = {
