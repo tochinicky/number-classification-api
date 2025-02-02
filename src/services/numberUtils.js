@@ -23,13 +23,8 @@ const isPerfect = (num) => {
 };
 
 const isArmstrong = (num) => {
-  if (num < 0) return false; // Handle negative numbers
-  const str = num.toString();
+  const str = Math.abs(num).toString();
   const power = str.length;
-
-  // Special case: single-digit numbers
-  if (power === 1) return false; // Exclude single-digit Armstrong numbers
-
   return (
     num ===
     str

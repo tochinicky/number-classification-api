@@ -10,8 +10,9 @@ const classifyNumber = async (req, res) => {
   try {
     const { number } = req.query;
 
-    // Strict integer validation
-    if (!/^-?\d+$/.test(number)) {
+    // Enhanced validation: Allow integers in any format (including negatives and decimals)
+    const parsed = parseFloat(number);
+    if (isNaN(parsed) || !Number.isInteger(parsed)) {
       return res.status(400).json({
         number: number,
         error: true,
