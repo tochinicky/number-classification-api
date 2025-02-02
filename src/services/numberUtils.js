@@ -82,4 +82,5 @@ const isPerfect = (num) => {
   }
   return sum === num && num !== 1;
 };
+
 module.exports = { isPrime, isPerfect, isArmstrong, digitSum };

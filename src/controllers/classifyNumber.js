@@ -48,7 +48,9 @@ const classifyNumber = async (req, res) => {
   }
 
   const properties = [];
-  if (isArmstrong(number)) properties.push("armstrong");
+  if (isArmstrong(number)) {
+    properties.push("armstrong");
+  }
   properties.push(number % 2 === 0 ? "even" : "odd");
 
   try {
