@@ -46,7 +46,15 @@ const classifyNumber = async (req, res) => {
   if (isNaN(number)) {
     return res.status(400).json({ number: req.query.number, error: true });
   }
-
+  // Reject floating-point numbers
+  if (!Number.isInteger(number)) {
+    return res
+      .status(400)
+      .json({
+        number: req.query.number,
+        error: "Floating-point numbers are not supported",
+      });
+  }
   const properties = [];
   if (isArmstrong(number)) {
     properties.push("armstrong");
@@ -57,8 +65,8 @@ const classifyNumber = async (req, res) => {
     //const response = await axios.get(`http://numbersapi.com/${number}/math`);
     res.json({
       number,
-      is_prime: isPrime(number),
-      is_perfect: isPerfect(number),
+      is_prime: isPrime(Math.abs(number)),
+      is_perfect: isPerfect(Math.abs(number)),
       properties,
       digit_sum: digitSum(number),
       fun_fact: await getFunFact(number),

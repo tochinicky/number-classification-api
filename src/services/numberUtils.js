@@ -64,10 +64,6 @@ const digitSum = (num) => {
 };
 
 const isArmstrong = (num) => {
-  // Ensure the input is a positive integer
-  if (!Number.isInteger(num) || num < 0) {
-    return false; // Negative numbers & floating points are not Armstrong numbers
-  }
   const digits = num.toString().split("");
   const sum = digits.reduce(
     (acc, digit) => acc + Math.pow(parseInt(digit), digits.length),
