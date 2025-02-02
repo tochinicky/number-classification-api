@@ -25,6 +25,10 @@ const isPerfect = (num) => {
 const isArmstrong = (num) => {
   const str = Math.abs(num).toString();
   const power = str.length;
+
+  // Exclude single-digit numbers from Armstrong classification
+  if (power === 1) return false;
+
   return (
     num ===
     str

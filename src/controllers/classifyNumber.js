@@ -21,13 +21,13 @@ const classifyNumber = async (req, res) => {
     // Calculate properties
     const properties = [];
     if (isArmstrong(num)) properties.push("armstrong");
-    properties.push(Math.abs(num) % 2 === 0 ? "even" : "odd");
+    properties.push(num % 2 === 0 ? "even" : "odd");
 
     // Build response
     const response = {
       number: num,
-      is_prime: isPrime(Math.abs(num)), // Primes are absolute
-      is_perfect: isPerfect(Math.abs(num)), // Perfect numbers are positive
+      is_prime: isPrime(Math.abs(num)),
+      is_perfect: isPerfect(Math.abs(num)),
       properties,
       digit_sum: digitSum(num),
       fun_fact: await getFunFact(num),
