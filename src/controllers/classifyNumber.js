@@ -42,38 +42,45 @@ const classifyNumber = async (req, res) => {
   //   } catch (error) {
   //     res.status(500).json({ error: "Internal server error" });
   //   }
-  const number = parseInt(req.query.number);
+  const number = parseInt(req.query.number, 10);
   if (isNaN(number)) {
     return res.status(400).json({ number: req.query.number, error: true });
   }
-  // Reject floating-point numbers
-  if (!Number.isInteger(number)) {
-    return res
-      .status(400)
-      .json({
-        number: req.query.number,
-        error: "Floating-point numbers are not supported",
-      });
+
+  //   const properties = [];
+  //   if (isArmstrong(number)) {
+  //     properties.push("armstrong");
+  //   }
+  //   properties.push(number % 2 === 0 ? "even" : "odd");
+  const prime = isPrime(number);
+  const perfect = isPerfect(number);
+  const armstrong = isArmstrong(number);
+  const parity = number % 2 === 0 ? "even" : "odd";
+
+  let properties = [];
+  if (prime) {
+    properties.push("prime");
   }
-  const properties = [];
-  if (isArmstrong(number)) {
+  if (perfect) {
+    properties.push("perfect");
+  }
+  if (armstrong) {
     properties.push("armstrong");
   }
-  properties.push(number % 2 === 0 ? "even" : "odd");
 
-  try {
-    //const response = await axios.get(`http://numbersapi.com/${number}/math`);
-    res.json({
-      number,
-      is_prime: isPrime(Math.abs(number)),
-      is_perfect: isPerfect(Math.abs(number)),
-      properties,
-      digit_sum: digitSum(number),
-      fun_fact: await getFunFact(number),
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch fun fact" });
-  }
+  // Add parity (odd/even)
+  properties.push(parity);
+  const sum = digitSum(number);
+
+  //const response = await axios.get(`http://numbersapi.com/${number}/math`);
+  return res.status(200).json({
+    number,
+    is_prime: prime,
+    is_perfect: perfect,
+    properties: properties,
+    digit_sum: sum,
+    fun_fact: await getFunFact(number),
+  });
 };
 
 module.exports = { classifyNumber };
