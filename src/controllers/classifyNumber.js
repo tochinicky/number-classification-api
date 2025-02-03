@@ -12,6 +12,7 @@ const classifyNumber = async (req, res) => {
     return res.status(400).json({ number: req.query.number, error: true });
   }
 
+  const prime = isPrime(parsedNumber);
   const perfect = isPerfect(number);
   const armstrong = isArmstrong(number);
   const parity = number % 2 === 0 ? "even" : "odd";
